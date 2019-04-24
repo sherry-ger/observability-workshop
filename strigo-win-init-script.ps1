@@ -1,3 +1,4 @@
+<powershell>
 set-executionpolicy -Force remotesigned -s currentuser; [System.Net.ServicePointManager]::SecurityProtocol= 3072 -bor 768 -bor 192 -bor 48;
 $downloadPath = "C:\Users\Administrator\Downloads\"
 $workshopPath = "C:\Users\Administrator\Desktop\workshop-content"
@@ -28,10 +29,11 @@ function Update-Path()
 }
 
 Install-Git
-Update-Path
+#Update-Path
 New-Item -Path $workshopPath -ItemType "directory"
 Set-Location -Path $downloadPath
-Invoke-Expression -Command "git clone https://github.com/hemant-elastic/observability-workshop.git"
+& "C:\Program Files\Git\bin\git" clone https://github.com/hemant-elastic/observability-workshop.git
 Set-Location -Path observability-workshop
 Invoke-Expression -Command ".\win-prereqs-setup.ps1"
 Copy-Item  "C:\ProgramData\Amazon\EC2-Windows\Launch\Log\UserdataExecution.log" -Destination "C:\Users\Administrator\Desktop\"
+</powershell>
