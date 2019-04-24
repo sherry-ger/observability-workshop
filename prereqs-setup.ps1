@@ -73,5 +73,25 @@ function Download-Beats(){
 
 	}
 }
+
+function Copy-Data()
+{
+	If (!(Test-Path -Path $downloadPath -PathType Container)) {New-Item -Path $downloadPath -ItemType Directory | Out-Null}
+	$downloadPath = "C:\Users\Administrator\Downloads\"
+	Write-Output 'downloadPath = $downloadPath'
+	$dataOrigin = $downloadPath +'\observability-workshop\data\*'
+	$dataDest = $workshopPath + '\data\logs\'
+		
+	Copy-Item $dataOrigin -Destination $dataDest -Recurse
+	$nginxZipFile = $dataDest+'nginx\nginx.zip'
+	$nginxExtractLocation = $dataDest+'nginx'
+	
+	Write-Output 'nginxZipFile' + $nginxExtractLocation
+	[System.IO.Compression.ZipFile]::ExtractToDirectory($nginxZipFile, $nginxExtractLocation)
+	
+	Remove-Item $nginxZipFile
+	
+}
 Setup-Prereqs
 Download-Beats
+Copy-Data
